@@ -1,16 +1,13 @@
 import socket
 import random
-import os
 import threading
-
 users = {}  
 players = ""
 f = open("words.txt", "r")
 words = f.read().split()
 f.close()
-
 class Hangman_Server:
- 
+ '''This is the server side code for the Hangman game.'''
  def __init__(self, IP, port):
         super().__init__()
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP) as self.s:
@@ -20,13 +17,9 @@ class Hangman_Server:
             while 1:
                 conn, addr = self.s.accept()
                 print("Connected by: " , addr)
-                 
-                try: 
-                    t1 = threading.Thread(target=self.start_game, args=(conn, addr))
-                    print(t1)
-                    t1.start()
-                except:
-                    print("Thread is not created")
+                t1 = threading.Thread(target=self.start_game, args=(conn, addr))
+                print(t1)
+                t1.start()
  
  def start_game(self, conn, addr):
      data = conn.recv(1024).decode()
@@ -56,7 +49,7 @@ class Hangman_Server:
         conn.close()             
  
  def hangman(self, conn, secret_word, name, players):
-      '''This is the actual game code where the above three functions are called
+      '''The actual game code where the above three functions are called
       in aparticular order to guess the secret word correctly'''
       print(secret_word)
       letters_guessed = []
@@ -86,15 +79,13 @@ class Hangman_Server:
                   #If the guessed word is in letters guessed then print that you have 
                   #already guessed the word   
                   elif guessword in letters_guessed:
-                      guess += "Oops! You have already guessed that letter "+ self.users_guess(secret_word, letters_guessed) + '\n'
-                        
+                      guess += "Oops! You have already guessed that letter "+ self.users_guess(secret_word, letters_guessed) + '\n'    
                    # if secret word is not in secret word and not in lettersguessed then 
                    #decrement the number of guesses and append it to letters guessed     
                   else:
                       i = i-1
                       letters_guessed.append(guessword)
                       guess += "Oops! the letter is not in my word: " + self.users_guess(secret_word, letters_guessed) + '\n'
-                         
                   guess += '---------------------\n'
                   #If the secret word is guessed correctly then print you won
                   # else print you ran out of guesses and print the guess word.
@@ -139,7 +130,7 @@ class Hangman_Server:
 
 
  def users_guess(self, secret_word, letters_guessed):
-    '''Expected Input:a string and a list of guessed words
+    '''Expected Input:a string and a list of guessed words.
     This function returns a string which contains correctly guessed
     letters at their respective positions '''
     word = []
@@ -151,14 +142,14 @@ class Hangman_Server:
     #in the secret_word     
     for letter in letters_guessed:
         if letter in secret_word:
-            for j in range(len(secret_word)):
-                if letter == secret_word[j]:
-                    word[j] = letter
+            for i, j in enumerate(secret_word):
+                if letter == secret_word[i]:
+                    word[i] = letter
     return " ".join(word)
 
 
  def getavailable_letters(self, letters_guessed):
-    '''Expected input: a list of letters guessed by the user
+    '''Expected input: a list of letters guessed by the user.
     This function mainly returns a string which contains the letters,
     other than the letters that are not present in the secret_word but
      guessed by the user, in the alphabetical order'''
@@ -189,7 +180,7 @@ class Hangman_Server:
 class Player:
     score = 0
     wordlist = []
-    rollno = ''
+    '''The class is player class whihc consists of score and wordlist of a player'''
     def __init__(self,Secretword):
         super().__init__()
         self.wordlist.append(Secretword)
