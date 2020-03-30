@@ -1,13 +1,13 @@
 import socket
 import random
 import threading
-users = {}  
+users = {}
 players = ""
 f = open("words.txt", "r")
 words = f.read().split()
 f.close()
 class Hangman_Server:
- '''This is the server side code for the Hangman game.'''
+ """The  server side code for the Hangman game."""
  def __init__(self, IP, port):
         super().__init__()
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP) as self.s:
@@ -20,10 +20,10 @@ class Hangman_Server:
                 t1 = threading.Thread(target=self.start_game, args=(conn, addr))
                 print(t1)
                 t1.start()
- 
+
  def start_game(self, conn, addr):
      data = conn.recv(1024).decode()
-     if ('Start' in data): 
+     if ('Start' in data):
         details = data.split(" ")[1]
         print(details)
         if (details not in users):
@@ -44,13 +44,13 @@ class Hangman_Server:
                 secret_word = random.choice(words)
                 if(secret_word not in players.wordlist):
                     players.wordlist.append(secret_word)
-                    break 
-        self.hangman(conn,secret_word, details, players)   
-        conn.close()             
- 
+                    break
+        self.hangman(conn,secret_word, details, players)
+        conn.close()
+
  def hangman(self, conn, secret_word, name, players):
-      '''The actual game code where the above three functions are called
-      in aparticular order to guess the secret word correctly'''
+      """The actual game code where the above three functions are called
+      in aparticular order to guess the secret word correctly."""
       print(secret_word)
       letters_guessed = []
       i = 8
@@ -66,7 +66,7 @@ class Hangman_Server:
           out += 'available letters '+ self.getavailable_letters(letters_guessed) + '\n' + 'Please guess a letter: '
           conn.send(out.encode())
           guessword = conn.recv(1024).decode()
-          #The guess word is converted into lower case 
+          #The guess word is converted into lower case
           guessword = guessword.lower()
           #If the guessed word is in secret word and not in letters guessed
           #the append it to letters guessed
@@ -76,12 +76,12 @@ class Hangman_Server:
                   if guessword in secret_word and guessword not in letters_guessed:
                       letters_guessed.append(guessword)
                       guess += "good guess : " + self.users_guess(secret_word, letters_guessed) + "\n"
-                  #If the guessed word is in letters guessed then print that you have 
-                  #already guessed the word   
+                  #If the guessed word is in letters guessed then print that you have
+                  #already guessed the word
                   elif guessword in letters_guessed:
-                      guess += "Oops! You have already guessed that letter "+ self.users_guess(secret_word, letters_guessed) + '\n'    
-                   # if secret word is not in secret word and not in lettersguessed then 
-                   #decrement the number of guesses and append it to letters guessed     
+                      guess += "Oops! You have already guessed that letter "+ self.users_guess(secret_word, letters_guessed) + '\n'
+                   # if secret word is not in secret word and not in lettersguessed then
+                   #decrement the number of guesses and append it to letters guessed
                   else:
                       i = i-1
                       letters_guessed.append(guessword)
@@ -98,7 +98,7 @@ class Hangman_Server:
                   elif i == 0:
                       guess += "Sorry you ran out of guesses. The word was "+ secret_word + "\n"
                       guess += "Your score is 0"
-                  conn.sendall(guess.encode())      
+                  conn.sendall(guess.encode())
               else:
                   guess += "please enter an alphabet\n"
                   guess +='---------------------\n'
@@ -115,11 +115,11 @@ class Hangman_Server:
 
 
  def is_word_guessed(self, secret_word, letters_guessed):
-    '''Expected Input: a string and a list of guessed words
+    """Expected Input: a string and a list of guessed words.
     The function mainly checks if we guessed secret word or not.
-    If the word is correct , then it returns True else returns False'''
+    If the word is correct , then it returns True else returns False."""
     count = 0
-    #The count of letters guessed correctly is calculated in the loop 
+    #The count of letters guessed correctly is calculated in the loop
     for char in secret_word:
         if char in letters_guessed:
             count += 1
@@ -130,16 +130,16 @@ class Hangman_Server:
 
  @classmethod
  def users_guess(self, secret_word, letters_guessed):
-    '''Expected Input:a string and a list of guessed words.
+    """Expected Input:a string and a list of guessed words.
     This function returns a string which contains correctly guessed
-    letters at their respective positions '''
+    letters at their respective positions."""
     word = []
     #'_' is appended to the word list each time the loop runs.
     #The length of the word list is equal to secret word.
     for iteration in range(len(secret_word)):
         word.append('_')
-    #If the letter is guessed correctly then it is returned with its position 
-    #in the secret_word     
+    #If the letter is guessed correctly then it is returned with its position
+    #in the secret_word
     for letter in letters_guessed:
         if letter in secret_word:
             for i, j in enumerate(secret_word):
@@ -149,10 +149,10 @@ class Hangman_Server:
 
 
  def getavailable_letters(self, letters_guessed):
-    '''Expected input: a list of letters guessed by the user.
+    """Expected input: a list of letters guessed by the user.
     This function mainly returns a string which contains the letters,
     other than the letters that are not present in the secret_word but
-     guessed by the user, in the alphabetical order'''
+     guessed by the user, in the alphabetical order"""
     lis = ''
     import string
     string = string.ascii_lowercase
@@ -180,13 +180,11 @@ class Hangman_Server:
 class Player:
     score = 0
     wordlist = []
-    '''The class is player class whihc consists of score and wordlist of a player'''
     def __init__(self,Secretword):
+        """The class is player class whihc consists of score and wordlist of a player."""
         super().__init__()
         self.wordlist.append(Secretword)
-
 def main():
    Hangman_Server('127.0.0.1', 2525)
-
 if __name__ == "__main__":
-    main()              
+    main()

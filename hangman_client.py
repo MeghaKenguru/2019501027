@@ -38,8 +38,8 @@ class HangmanClient:
                 elif (('Please guess a letter:') in message):
                     #print("abc")
                     self.s.send(input().encode())
-            self.s.close()                 
+            self.s.close()
 def main():
     HangmanClient('', 2525)
 if __name__ == "__main__":
-    main()              
+    main()
