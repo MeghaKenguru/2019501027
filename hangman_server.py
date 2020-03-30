@@ -155,7 +155,6 @@ class Hangman_Server:
  def getavailable_letters(self, letters_guessed):
     """
     Expected input: a list of letters guessed by the user.
-
     This function mainly returns a string which contains the letters,
     other than the letters that are not present in the secret_word but
     guessed by the user, in the alphabetical order.
