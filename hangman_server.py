@@ -8,7 +8,9 @@ words = f.read().split()
 f.close()
 class Hangman_Server:
  """The  server side code for the Hangman game."""
+
  def __init__(self, IP, port):
+        """The constructor for the server code."""
         super().__init__()
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP) as self.s:
             self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -49,8 +51,7 @@ class Hangman_Server:
         conn.close()
 
  def hangman(self, conn, secret_word, name, players):
-      """The actual game code where the above three functions are called
-      in aparticular order to guess the secret word correctly."""
+      """The actual game code where the above three functions are called in aparticular order to guess the secret word correctly."""
       print(secret_word)
       letters_guessed = []
       i = 8
@@ -113,11 +114,13 @@ class Hangman_Server:
       else:
           conn.send(("Game Over").encode())
 
-
+ @classmethod
  def is_word_guessed(self, secret_word, letters_guessed):
-    """Expected Input: a string and a list of guessed words.
+    """
+    Expected Input: a string and a list of guessed words.
     The function mainly checks if we guessed secret word or not.
-    If the word is correct , then it returns True else returns False."""
+    If the word is correct , then it returns True else returns False.
+    """
     count = 0
     #The count of letters guessed correctly is calculated in the loop
     for char in secret_word:
@@ -147,12 +150,14 @@ class Hangman_Server:
                     word[i] = letter
     return " ".join(word)
 
-
+ @classmethod
  def getavailable_letters(self, letters_guessed):
-    """Expected input: a list of letters guessed by the user.
+    """
+    Expected input: a list of letters guessed by the user.
     This function mainly returns a string which contains the letters,
     other than the letters that are not present in the secret_word but
-     guessed by the user, in the alphabetical order"""
+    guessed by the user, in the alphabetical order.
+    """
     lis = ''
     import string
     string = string.ascii_lowercase
