@@ -2,7 +2,7 @@ import socket
 
 class HangmanClient:
      def __init__(self, IP, port):
-        """ The code for hangman client."""
+        """The code for hangman client."""
         super().__init__()
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP) as self.s:
             self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
