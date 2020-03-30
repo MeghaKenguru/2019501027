@@ -128,7 +128,7 @@ class Hangman_Server:
     else:
       return False
 
-
+ @classmethod
  def users_guess(self, secret_word, letters_guessed):
     '''Expected Input:a string and a list of guessed words.
     This function returns a string which contains correctly guessed
@@ -143,7 +143,7 @@ class Hangman_Server:
     for letter in letters_guessed:
         if letter in secret_word:
             for i, j in enumerate(secret_word):
-                if letter == secret_word[i]:
+                if letter == j:
                     word[i] = letter
     return " ".join(word)
 
@@ -156,8 +156,7 @@ class Hangman_Server:
     lis = ''
     import string
     string = string.ascii_lowercase
-    # If the letter is guessed then it is deleted from the list of available 
-    #letters
+    # If the letter is guessed then it is deleted from the list of available letters
     for i in string:
         if i not in letters_guessed:
             lis = lis+i
@@ -165,6 +164,7 @@ class Hangman_Server:
         lis = string
     return lis
 
+ @classmethod
  def LeaderBoard(self):
      #print(users)
      board = sorted(users.items(), key=lambda player: (player[1].score, player[0]), reverse = True)
@@ -173,9 +173,9 @@ class Hangman_Server:
          out +=  i[0] + "\t" + str(i[1].score) + "\n"
      return out
 
+ @classmethod
  def Score(self, secret_word, n):
      return len(secret_word) * n
-
 
 class Player:
     score = 0
@@ -187,7 +187,6 @@ class Player:
 
 def main():
    Hangman_Server('127.0.0.1', 2525)
-
 
 if __name__ == "__main__":
     main()              

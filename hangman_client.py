@@ -1,7 +1,7 @@
 import socket
 
 class HangmanClient:
-    ''' The code for hangman client'''
+     ''' The code for hangman client'''
      def __init__(self, IP, port):
         super().__init__()
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP) as self.s:
