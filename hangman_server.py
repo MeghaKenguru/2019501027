@@ -7,8 +7,6 @@ f = open("words.txt", "r")
 words = f.read().split()
 f.close()
 class Hangman_Server:
- """The  server side code for the Hangman game."""
-
  def __init__(self, IP, port):
         """The constructor for the server code."""
         super().__init__()
@@ -133,9 +131,12 @@ class Hangman_Server:
 
  @classmethod
  def users_guess(self, secret_word, letters_guessed):
-    """Expected Input:a string and a list of guessed words.
+    """
+    Expected Input:a string and a list of guessed words.
+
     This function returns a string which contains correctly guessed
-    letters at their respective positions."""
+    letters at their respective positions.
+    """
     word = []
     #'_' is appended to the word list each time the loop runs.
     #The length of the word list is equal to secret word.
@@ -154,6 +155,7 @@ class Hangman_Server:
  def getavailable_letters(self, letters_guessed):
     """
     Expected input: a list of letters guessed by the user.
+
     This function mainly returns a string which contains the letters,
     other than the letters that are not present in the secret_word but
     guessed by the user, in the alphabetical order.
